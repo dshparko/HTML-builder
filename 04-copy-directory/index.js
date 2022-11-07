@@ -2,36 +2,36 @@ const path = require("path");
 const fs = require("fs/promises");
 
 const oldFolder = path.resolve(__dirname, "files");
-const newFoldet = path.resolve(__dirname, "files-copy");
+const newFolder = path.resolve(__dirname, "files-copy");
 
-copyDir(oldFolder, newFoldet);
+copyDir(oldFolder, newFolder);
 
-async function copyDir(oldFolder, newFoldet) {
+async function copyDir(oldFolder, newFolder) {
   try {
-    await fs.rm(newFoldet, { recursive: true });
-    await makeCopy(oldFolder, newFoldet);
+    await fs.rm(newFolder, { recursive: true });
+    await makeCopy(oldFolder, newFolder);
   } catch (e) {
-    await copy(oldFolder, newFoldet);
+    await copy(oldFolder, newFolder);
   }
 }
 
-async function copy(oldFolder, newFoldet) {
-  await fs.mkdir(newFoldet);
+async function copy(oldFolder, newFolder) {
+  await fs.mkdir(newFolder);
 
   const files = await fs.readdir(oldFolder, { withFileTypes: true });
 
   if (files.length) {
-    await copyFiles(files, oldFolder, newFoldet);
+    await copyFiles(files, oldFolder, newFolder);
   }
 }
 
-async function copyFiles(files, oldFolder, newFoldet) {
+async function copyFiles(files, oldFolder, newFolder) {
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     const isDirectory = file.isDirectory();
 
     const oldFolderPath = path.join(oldFolder, file.name);
-    const toPath = path.join(newFoldet, file.name);
+    const toPath = path.join(newFolder, file.name);
 
     if (!isDirectory) {
       await fs.copyFile(oldFolderPath, toPath);
